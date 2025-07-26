@@ -191,4 +191,110 @@ const MainMenu: React.FC = () => {
                   value={roomId}
                   onChange={(e) => setRoomId(e.target.value.toUpperCase())}
                   placeholder="Nhập mã phòng..."
-                  className="w-full px-4 py
+                  className="w-full px-4 py-3 bg-black/20 text-white placeholder-gray-400 rounded-lg border border-gray-600 focus:border-blue-400 focus:outline-none transition-colors text-center font-mono text-lg"
+                  maxLength={6}
+                />
+              </div>
+              
+              <motion.button
+                type="submit"
+                disabled={!playerName.trim() || !roomId.trim()}
+                className={`
+                  w-full py-4 rounded-xl font-bold text-lg transition-all duration-200
+                  ${playerName.trim() && roomId.trim()
+                    ? 'bg-gradient-to-r from-blue-500 to-purple-500 hover:from-blue-600 hover:to-purple-600 text-white shadow-lg'
+                    : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  }
+                `}
+                whileHover={playerName.trim() && roomId.trim() ? { scale: 1.02 } : {}}
+                whileTap={playerName.trim() && roomId.trim() ? { scale: 0.98 } : {}}
+              >
+                🚀 Vào phòng
+              </motion.button>
+              
+              <p className="text-gray-300 text-sm text-center">
+                Nhập mã phòng 6 số để tham gia game
+              </p>
+            </motion.form>
+          )}
+
+          {activeTab === 'ai' && (
+            <motion.form
+              key="ai"
+              onSubmit={handleCreateAIGame}
+              className="space-y-4"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              transition={{ duration: 0.3 }}
+            >
+              <div>
+                <label className="block text-white font-semibold mb-3">
+                  🎯 Chọn độ khó:
+                </label>
+                <div className="space-y-2">
+                  {[
+                    { value: 'easy', label: '😊 Dễ', desc: 'AI đi ngẫu nhiên' },
+                    { value: 'medium', label: '🤔 Trung bình', desc: 'AI ưu tiên góc và cạnh' },
+                    { value: 'hard', label: '😈 Khó', desc: 'AI thông minh và khó đánh bại' }
+                  ].map((difficulty) => (
+                    <motion.button
+                      key={difficulty.value}
+                      type="button"
+                      onClick={() => setSelectedDifficulty(difficulty.value as AIDifficulty)}
+                      className={`
+                        w-full p-3 rounded-lg text-left transition-all duration-200 border-2
+                        ${selectedDifficulty === difficulty.value
+                          ? 'border-yellow-400 bg-yellow-400/20 text-white'
+                          : 'border-gray-600 bg-black/20 text-gray-300 hover:border-gray-500'
+                        }
+                      `}
+                      whileHover={{ scale: 1.02 }}
+                      whileTap={{ scale: 0.98 }}
+                    >
+                      <div className="font-semibold">{difficulty.label}</div>
+                      <div className="text-sm text-gray-400">{difficulty.desc}</div>
+                    </motion.button>
+                  ))}
+                </div>
+              </div>
+              
+              <motion.button
+                type="submit"
+                disabled={!playerName.trim()}
+                className={`
+                  w-full py-4 rounded-xl font-bold text-lg transition-all duration-200
+                  ${playerName.trim()
+                    ? 'bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white shadow-lg'
+                    : 'bg-gray-600 text-gray-400 cursor-not-allowed'
+                  }
+                `}
+                whileHover={playerName.trim() ? { scale: 1.02 } : {}}
+                whileTap={playerName.trim() ? { scale: 0.98 } : {}}
+              >
+                🤖 Chơi với AI
+              </motion.button>
+              
+              <p className="text-gray-300 text-sm text-center">
+                Thử thách bản thân với AI thông minh
+              </p>
+            </motion.form>
+          )}
+        </AnimatePresence>
+
+        {/* Footer */}
+        <motion.div
+          className="mt-8 text-center text-gray-400 text-sm"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5 }}
+        >
+          <p>🎮 Tạo bởi Claude AI</p>
+          <p className="mt-1">Phiên bản 2.0 - Cải tiến UI/UX</p>
+        </motion.div>
+      </motion.div>
+    </div>
+  );
+};
+
+export default MainMenu;
